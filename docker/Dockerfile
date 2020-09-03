@@ -1,5 +1,9 @@
 FROM python:slim as base
 
+ENV UID=1000
+RUN addgroup --gid 1000 user
+RUN useradd --uid $UID --gid 1000 users
+
 # install libraries
 RUN set -eux; \
     apt-get update; \
@@ -77,3 +81,4 @@ ENV PATH=/wabt-build:$PATH
 
 RUN apt-get update && apt-get install -y --no-install-recommends gcc libc6-dev
 
+RUN chown -R 1000:1000 /rustup /cargo /wabt-build
